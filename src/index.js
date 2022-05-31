@@ -4,7 +4,7 @@ import menuItem from './templates/menuitem.hbs';
 
 const refs = {
     list: document.querySelector('.js-menu'),
-    checkbox: document.querySelector('.theme-switch-toggle'),
+    checkbox: document.querySelector('#theme-switch-toggle'),
 
 };
 
