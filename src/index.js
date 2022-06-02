@@ -1,18 +1,16 @@
 import menu from './menu.json';
 import menuItem from './templates/menuitem.hbs';
 
+const THEME_LOCALSTORAGE_KEY = 'theme';
+const Theme = {
+  LIGHT: 'light-theme',
+  DARK: 'dark-theme',
+};
 
 const refs = {
     list: document.querySelector('.js-menu'),
     checkbox: document.querySelector('#theme-switch-toggle'),
     
-};
-
-// checkboxChange();
- updateOutput();
-const Theme = {
-  LIGHT: 'light-theme',
-  DARK: 'dark-theme',
 };
 
 function createMarkup(menu) {
@@ -22,19 +20,26 @@ function createMarkup(menu) {
 }
 createMarkup(menu);
 
+
+
 refs.checkbox.addEventListener('change', oncheckboxChange);
 
-function oncheckboxChange(e) {
-    e.preventDefault();
-    
-    // e.currentTarget.reset();
+// повісила слухача події на віндоу. подія - load (коли сторінка завантажиться, то відбудеться ця подія і я її зловлю і оброблю)
+window.addEventListener('load', onWindowLoadGetTheme);
+ 
+// створила функцію, якою буду обробляти подію load і буду завантажувати із сторіджу тему===
+function onWindowLoadGetTheme() {
+    const { theme } = load(THEME_LOCALSTORAGE_KEY);
+    // це те саме, аби я написала const curenttheme = load(THEME_LOCALSTORAGE_KEY):
+    // запис curenttheme.theme =  const { theme } = load(THEME_LOCALSTORAGE_KEY);
 
-    localStorage.setItem('LOCALSTORAGE_KEY', JSON.stringify(Theme));
-    updateOutput();
-
+    // якщо значення чекбоксу тру, то буде тема темна...
+    refs.checkbox.checked = theme === 'dark';
+    console.log(theme);
+//  перевіряю яка тема і залежності від стану чекбоксу із 42 рядка... стилі мають працювати. 
     if (!refs.checkbox.checked) {
         document.body.classList.add(Theme.LIGHT);
-        document.body.classList.remove(Theme.DARK);
+        document.body.classList.remove(Theme.DARK);   
     }
     else {
         document.body.classList.remove(Theme.LIGHT);
@@ -42,17 +47,57 @@ function oncheckboxChange(e) {
     }
 }
 
-function updateOutput() {
+function oncheckboxChange(e) {
+    e.preventDefault();
 
-    // localStorage.setItem('LOCALSTORAGE_KEY', document.body.className);
-    // localStorage.getItem('LOCALSTORAGE_KEY') || true;
-    const updateChecked = localStorage.getItem('LOCALSTORAGE_KEY');
-    if (updateChecked) {
-        console.log(updateChecked);
-        const parsedSettings = JSON.parse(updateChecked);
-        console.log(parsedSettings);
+// ===Це об"єкт з темо, яку я буду зберігати до Локалсторіджу (в атрибуті чекед лежить або фолс, або тру, якщо чекнутий, тоді тру... За замовчуванням він фолс)=== 
+    const currentTheme = {
+        theme: refs.checkbox.checked ? 'dark' : 'light',
+        // це те саме, як theme: e.currentTarget.checked ?'dark' : 'light',
+}
+
+    if (!refs.checkbox.checked) {
+        document.body.classList.add(Theme.LIGHT);
+        document.body.classList.remove(Theme.DARK);   
     }
-}    
+    else {
+        document.body.classList.remove(Theme.LIGHT);
+        document.body.classList.add(Theme.DARK);
+    }
+    // зберігаю об"єкт з темою до Локалсторіджу===
+    save(THEME_LOCALSTORAGE_KEY, currentTheme);
+}
+
+function save (key, value) {
+  try {
+    const serializedState = JSON.stringify(value);
+    localStorage.setItem(key, serializedState);
+  } catch (error) {
+    console.error("Set state error: ", error.message);
+  }
+};
+
+function load  (key) {
+  try {
+    const serializedState = localStorage.getItem(key);
+    return serializedState === null ? undefined : JSON.parse(serializedState);
+  } catch (error) {
+    console.error("Get state error: ", error.message);
+  }
+};
+
+
+// function updateOutput() {
+
+//     // localStorage.setItem('LOCALSTORAGE_KEY', document.body.className);
+//     // localStorage.getItem('LOCALSTORAGE_KEY') || true;
+//     const updateChecked = localStorage.getItem('LOCALSTORAGE_KEY');
+//     if (updateChecked) {
+//         console.log(updateChecked);
+//         const parsedSettings = JSON.parse(updateChecked);
+//         console.log(parsedSettings);
+//     }
+// }    
 
 //         refs.checkbox.value = updateChecked;
 
