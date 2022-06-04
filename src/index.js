@@ -20,8 +20,6 @@ function createMarkup(menu) {
 }
 createMarkup(menu);
 
-
-
 refs.checkbox.addEventListener('change', oncheckboxChange);
 
 // повісила слухача події на віндоу. подія - load (коли сторінка завантажиться, то відбудеться ця подія і я її зловлю і оброблю)
@@ -36,7 +34,7 @@ function onWindowLoadGetTheme() {
     // якщо значення чекбоксу тру, то буде тема темна...
     refs.checkbox.checked = theme === 'dark';
     console.log(theme);
-//  перевіряю яка тема і залежності від стану чекбоксу із 42 рядка... стилі мають працювати. 
+//  перевіряю яка тема і в залежності від стану чекбоксу із 42 рядка... стилі мають працювати. 
     if (!refs.checkbox.checked) {
         document.body.classList.add(Theme.LIGHT);
         document.body.classList.remove(Theme.DARK);   
@@ -50,12 +48,11 @@ function onWindowLoadGetTheme() {
 function oncheckboxChange(e) {
     e.preventDefault();
 
-// ===Це об"єкт з темо, яку я буду зберігати до Локалсторіджу (в атрибуті чекед лежить або фолс, або тру, якщо чекнутий, тоді тру... За замовчуванням він фолс)=== 
+// ===Це об"єкт з темою, яку я буду зберігати до Локалсторіджу (в атрибуті чекед лежить або фолс, або тру, якщо чекнутий, тоді тру... За замовчуванням він фолс)=== 
     const currentTheme = {
         theme: refs.checkbox.checked ? 'dark' : 'light',
         // це те саме, як theme: e.currentTarget.checked ?'dark' : 'light',
 }
-
     if (!refs.checkbox.checked) {
         document.body.classList.add(Theme.LIGHT);
         document.body.classList.remove(Theme.DARK);   
@@ -87,65 +84,48 @@ function load  (key) {
 };
 
 
-// function updateOutput() {
-
-//     // localStorage.setItem('LOCALSTORAGE_KEY', document.body.className);
-//     // localStorage.getItem('LOCALSTORAGE_KEY') || true;
-//     const updateChecked = localStorage.getItem('LOCALSTORAGE_KEY');
-//     if (updateChecked) {
-//         console.log(updateChecked);
-//         const parsedSettings = JSON.parse(updateChecked);
-//         console.log(parsedSettings);
-//     }
-// }    
-
-//         refs.checkbox.value = updateChecked;
 
 
 
+// import menueData from './js/menu.json';
+// import menueTpl from './templates/list-render.hbs';
+// console.log('menueTpl :>> ', menueTpl);
 
-// (function(selector) {
-//     // не дублируем код
-//     function save(data) {
-//         localStorage.setItem(selector, JSON.stringify(data));
-//     }
-//     // и не создаем тысячи функций в цикле
-//     // а используем одну общую
-//     function onChange(event) {
-//         var element = event.target,
-//             name = element.name,
-//             value = element.value;
-//         data[name] = value;
-//         save(data);
-//     }
-//     var elements = document.querySelectorAll(selector),
-//         data = localStorage.getItem(selector);
-//     if(data) { // если в сторадже что-то есть
-//         // то можем и распарсить
-//         data = JSON.parse(data);
-//     } else {
-//         // иначе парсить нельзя, будет ошибка
-//         // присвоим дефолтное значение и сохраним
-//         save(data = {});
-//     }
-//     // вместо ненужного создания массива
-//     // обратимся напрямую к прототипу
-//     Array.prototype.forEach.call(elements, function(element) {
-//         var name = element.name,
-//             value = element.value;
-//         if(data[name] === value) { // если текущий элемент отмечен в сторадже
-//             // то отметим и на странице
-//             element.checked = true;
-//         }
-//         // навесим созданый вне цикла хандлер на событие
-//         element.addEventListener("change", onChange);        
-//     });
-// })
+// const Theme = {
+//   LIGHT: 'light-theme',
+//   DARK: 'dark-theme',
+// };
+
+// const KEY = 'theme';
+
+// const refs = {
+//   menu: document.querySelector('.js-menu'),
+//   switcher: document.getElementById('theme-switch-toggle')
+// }
+
+// refs.menu.insertAdjacentHTML('beforeend', menueTpl(menueData));
+// refs.switcher.addEventListener('change', changeThemeAndSetLocalSrorage);
+
+// function changeThemeAndSetLocalSrorage(e) {
+//   if (e.target.checked) {
+//     document.body.classList.remove(Theme.LIGHT);
+//     document.body.classList.add(Theme.DARK)
+//   } else {
+//     document.body.classList.remove(Theme.DARK);
+//     document.body.classList.add(Theme.LIGHT)
+//   }
+//   localStorage.setItem('theme', document.body.className)
+// }
 
 
-
-
-
-
-
-
+// const localStorageVerify = () => {
+//   if (!localStorage.getItem(KEY) || localStorage.getItem(KEY) === `${Theme.LIGHT}`) {
+//     document.body.classList.add(Theme.LIGHT);
+//     refs.switcher.checked = false;
+//   }
+//   else {
+//     document.body.classList.add(localStorage.getItem(KEY))  
+//     refs.switcher.checked = true;
+//   }
+// } 
+// localStorageVerify();
